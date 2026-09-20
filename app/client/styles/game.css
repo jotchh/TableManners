@@ -1,0 +1,44 @@
+.game {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #081820;
+}
+
+.tabletop {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.canvas-container {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #081820;
+}
+
+.game-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 100;
+}
+
+.game-controls button {
+    padding: 8px 16px;
+    border: 1px solid #346856;
+    border-radius: 4px;
+    background: #346856;
+    color: #e0f8d0;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.game-controls button:hover {
+    background: #88c070;
+    color: #081820;
+}

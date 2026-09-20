@@ -1,0 +1,20 @@
+.canvas {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #081820;
+    cursor: default;
+}
+
+.canvas.panning {
+    cursor: grabbing;
+}
+
+.canvas-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+}

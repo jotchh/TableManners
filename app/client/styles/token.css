@@ -1,0 +1,84 @@
+.token {
+    position: absolute;
+    box-sizing: border-box;
+    border: 2px solid #081820;
+    border-radius: 50%;
+    overflow: visible;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+.token:active {
+    cursor: grabbing;
+}
+
+.token img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.token:hover {
+    border-color: #683434;
+}
+
+.token.selected {
+    border-color: #c07070;
+    box-shadow: 0 0 0 4px rgba(192, 112, 112, 0.4);
+}
+
+.token-name {
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    transform: translateX(-50%);
+    padding: 2px 5px;
+    color: #e0f8d0;
+    background: rgba(8, 24, 32, 0.85);
+    border-radius: 3px;
+    font-size: 12px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.token-measurement-line {
+    position: absolute;
+    height: 4px;
+    background: #c07070;
+    transform-origin: left center;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.token-measurement-distance {
+    position: absolute;
+    padding: 4px 8px;
+    background: #200808;
+    color: #f8d0d0;
+    border: 1px solid #683434;
+    border-radius: 4px;
+    font-size: 13px;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 6;
+}
+
+.token-resize-handle {
+    position: absolute;
+    right: -7px;
+    bottom: -7px;
+    width: 12px;
+    height: 12px;
+    box-sizing: border-box;
+    background: #e0f8d0;
+    border: 2px solid #88c070;
+    cursor: nwse-resize;
+    pointer-events: auto;
+    z-index: 20;
+}

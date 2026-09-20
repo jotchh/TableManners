@@ -1,0 +1,12 @@
+.battlemap {
+    display: grid;
+    position: relative;
+    background: #e0f8d0;
+    flex-shrink: 0;
+}
+
+.battlemap-cell {
+    box-sizing: border-box;
+    border: 1px solid #444;
+    background: #c8b98a;
+}

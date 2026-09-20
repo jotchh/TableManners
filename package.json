@@ -1,0 +1,29 @@
+{
+  "scripts": {
+    "start": "node ./app/server/server.js",
+    "build": "vite build",
+    "setup": "fly postgres connect -a tablemannersdb < setup.sql",
+    "start:local": "env-cmd node app/server.js",
+    "setup:local": "env-cmd psql -d postgres -c \"create database tablemannersdb\" -f setup.sql"
+  },
+  "dependencies": {
+    "axios": "^1.20.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1",
+    "multer": "^2.4.0",
+    "pg": "^8.23.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4",
+    "sharp": "^0.35.4",
+    "ws": "^8.21.3",
+    "env-cmd": "^10.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "process": "^0.11.10",
+    "vite": "^8.3.0",
+    "@flydotio/dockerfile": "^0.4.11"
+  }
+}

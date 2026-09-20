@@ -1,0 +1,65 @@
+.create-game-page {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #081820;
+}
+
+.create-game-card {
+    width: 400px;
+    padding: 32px;
+    border-radius: 8px;
+    background: #346856;
+    color: #e0f8d0;
+}
+
+.create-game-card h1 {
+    margin: 0 0 24px;
+}
+
+.create-game-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.create-game-card input {
+    padding: 10px;
+    border: 1px solid #88c070;
+    border-radius: 4px;
+    background: #081820;
+    color: #e0f8d0;
+    font-size: 16px;
+}
+
+.create-game-card input:focus {
+    outline: none;
+    border-color: #e0f8d0;
+}
+
+.create-game-card button {
+    margin-top: 10px;
+    padding: 10px;
+    border: 0;
+    border-radius: 4px;
+    background: #88c070;
+    color: #081820;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.create-game-card button:hover {
+    background: #e0f8d0;
+}
+
+.create-game-card button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.create-game-error {
+    margin: 4px 0;
+    color: #e0f8d0;
+}

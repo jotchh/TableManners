@@ -1,0 +1,38 @@
+.cursor-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.remote-cursor {
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    pointer-events: none;
+    transform: translate(-2px, -2px);
+}
+
+.remote-cursor-arrow {
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 11px solid var(--cursor-color);
+    transform: rotate(-45deg);
+    filter: drop-shadow(0 1px 2px #081820);
+}
+
+.remote-cursor-name {
+    margin-left: 2px;
+    margin-top: 7px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--cursor-color);
+    color: #e0f8d0;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px #081820;
+    box-shadow: 0 1px 3px #081820;
+}

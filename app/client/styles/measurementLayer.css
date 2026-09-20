@@ -1,0 +1,49 @@
+.measurement-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    cursor: crosshair;
+}
+
+.measurement-line {
+    position: absolute;
+    height: 4px;
+    background: #c07070;
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+.measurement-start,
+.measurement-end {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 4px solid #c07070;
+    border-radius: 50%;
+    background: #200808;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.measurement-distance {
+    position: absolute;
+    padding: 4px 8px;
+    background: #200808;
+    color: #f8d0d0;
+    border: 1px solid #683434;
+    border-radius: 4px;
+    font-size: 13px;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.measurement-cone {
+    pointer-events: none;
+}
+
+.measurement-cone polygon {
+    fill: rgba(192, 112, 112, 0.25);
+    stroke: rgba(192, 112, 112, 0.8);
+    stroke-width: 2;
+}
