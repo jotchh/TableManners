@@ -3,7 +3,7 @@
     "start": "node ./app/server/server.js",
     "build": "vite build",
     "setup": "fly postgres connect -a tablemannersdb < setup.sql",
-    "start:local": "env-cmd node app/server.js",
+    "start:local": "env-cmd node ./app/server/server.js",
     "setup:local": "env-cmd psql -d postgres -c \"create database tablemannersdb\" -f setup.sql"
   },
   "dependencies": {

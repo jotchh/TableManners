@@ -13,14 +13,14 @@ export default function Landing() {
 
                     <h2>A simple, lightweight virtual tabletop for D&D.</h2>
 
-                    <hr/>
+                    <hr style={{ marginBottom: "32px" }}/>
 
                     <div className="landing-actions">
-                        <Link to="/login" className="landing-start">
+                        <Link to="/dashboard" className="landing-start">
                             Create a Game
                         </Link>
 
-                        <Link to="/login" className="landing-start">
+                        <Link to="/dashboard" className="landing-start">
                             Join a Game
                         </Link>
                     </div>

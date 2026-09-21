@@ -25,7 +25,6 @@ if (process.env.NODE_ENV == "production") {
 	databaseConfig = { PGUSER, PGPASSWORD, PGDATABASE, PGHOST, PGPORT };
 }
 
-
 let app = express();
 app.use(express.json());
 app.use(cookieParser());

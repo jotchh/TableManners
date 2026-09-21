@@ -26,8 +26,11 @@ function createSession(gameId, hostId, state = {}) {
         hostId,
         clients: new Set(),
         state: {
-            tokens: Array.isArray(state.tokens) ? [...state.tokens] : [],
-            drawings: Array.isArray(state.drawings) ? [...state.drawings] : []
+            map: {
+                rows: Number.isInteger(state.map?.rows) ? state.map.rows : 20,
+                columns: Number.isInteger(state.map?.columns) ? state.map.columns : 20
+            },
+            tokens: Array.isArray(state.tokens) ? [...state.tokens] : []
         },
         revision: 0
     };
@@ -80,15 +83,13 @@ function broadcast(code, message, exclude = null) {
 }
 
 function broadcastState(session, ackPlayerId, ackSequence) {
-    const message = {
+    broadcast(session.code, {
         type: "state-update",
         revision: session.revision,
         ackPlayerId,
         ackSequence,
         state: session.state
-    };
-
-    broadcast(session.code, message);
+    });
 }
 
 function handleMessage(ws, message) {
@@ -147,6 +148,21 @@ function handleMessage(ws, message) {
     const session = sessions.get(ws.sessionCode);
     if (!session) return;
 
+    if (data.type === "map-resized") {
+        const rows = Number(data.rows);
+        const columns = Number(data.columns);
+
+        if (!Number.isInteger(rows) || !Number.isInteger(columns)) return;
+        if (rows < 1 || rows > 100) return;
+        if (columns < 1 || columns > 100) return;
+
+        session.state.map = { rows, columns };
+        session.revision++;
+
+        broadcastState(session, ws.playerId, data.sequence);
+        return;
+    }
+
     if (data.type === "token-created") {
         const exists = session.state.tokens.some(
             token => token.id === data.token?.id
@@ -161,12 +177,7 @@ function handleMessage(ws, message) {
 
         session.revision++;
 
-        broadcastState(
-            session,
-            ws.playerId,
-            data.sequence
-        );
-
+        broadcastState(session, ws.playerId, data.sequence);
         return;
     }
 
@@ -220,12 +231,7 @@ function handleMessage(ws, message) {
 
         session.revision++;
 
-        broadcastState(
-            session,
-            ws.playerId,
-            data.sequence
-        );
-
+        broadcastState(session, ws.playerId, data.sequence);
         return;
     }
 
@@ -236,78 +242,7 @@ function handleMessage(ws, message) {
 
         session.revision++;
 
-        broadcastState(
-            session,
-            ws.playerId,
-            data.sequence
-        );
-
-        return;
-    }
-
-    if (data.type === "drawing-created") {
-        const exists = session.state.drawings.some(
-            drawing => drawing.id === data.drawing?.id
-        );
-
-        if (exists) return;
-
-        session.state.drawings = [
-            ...session.state.drawings,
-            data.drawing
-        ];
-
-        session.revision++;
-
-        broadcastState(
-            session,
-            ws.playerId,
-            data.sequence
-        );
-
-        return;
-    }
-
-    if (data.type === "drawing-moved") {
-        const drawingExists = session.state.drawings.some(
-            drawing => drawing.id === data.drawingId
-        );
-
-        if (!drawingExists) return;
-
-        session.state.drawings = session.state.drawings.map(drawing => {
-            if (drawing.id !== data.drawingId) return drawing;
-
-            return {
-                ...drawing,
-                points: data.points
-            };
-        });
-
-        session.revision++;
-
-        broadcastState(
-            session,
-            ws.playerId,
-            data.sequence
-        );
-
-        return;
-    }
-
-    if (data.type === "drawing-deleted") {
-        session.state.drawings = session.state.drawings.filter(
-            drawing => drawing.id !== data.drawingId
-        );
-
-        session.revision++;
-
-        broadcastState(
-            session,
-            ws.playerId,
-            data.sequence
-        );
-
+        broadcastState(session, ws.playerId, data.sequence);
         return;
     }
 
@@ -334,6 +269,17 @@ function handleMessage(ws, message) {
             playerId: ws.playerId,
             username: ws.username,
             message
+        });
+
+        return;
+    }
+
+    if (data.type === "system-message") {
+        if (typeof data.message !== "string" || !data.message.trim()) return;
+
+        broadcast(ws.sessionCode, {
+            type: "system-message",
+            message: data.message.trim()
         });
 
         return;
@@ -385,7 +331,6 @@ function endSession(code) {
     return true;
 }
 
-
 function handleDisconnect(ws) {
     const code = ws.sessionCode;
 
@@ -399,7 +344,7 @@ function handleDisconnect(ws) {
         endSession(code);
         return;
     }
-    
+
     const playerId = ws.playerId;
     const username = ws.username;
 

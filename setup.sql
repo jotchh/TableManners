@@ -26,9 +26,7 @@ CREATE TABLE images (
     filename VARCHAR(255),
     mime_type VARCHAR(100) NOT NULL,
     data BYTEA NOT NULL,
-    created_by INTEGER NOT NULL
-        REFERENCES users(id)
-        ON DELETE CASCADE,
+    created_by INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

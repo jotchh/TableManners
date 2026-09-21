@@ -1,7 +1,7 @@
 .token {
     position: absolute;
     box-sizing: border-box;
-    border: 2px solid #081820;
+    border: 1px solid rgba(8, 24, 32, 0.55);
     border-radius: 50%;
     overflow: visible;
     cursor: grab;

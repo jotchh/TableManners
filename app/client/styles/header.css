@@ -47,3 +47,21 @@
     border-color: #e0f8d0;
     color: #081820;
 }
+
+.site-header .header-logout {
+    padding: 9px 16px;
+    border: 1px solid #88c070;
+    border-radius: 4px;
+    background: transparent;
+    color: #b8d8a8;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.site-header .header-logout:hover {
+    background: #88c070;
+    border-color: #88c070;
+    color: #081820;
+}

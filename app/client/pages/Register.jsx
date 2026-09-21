@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { register } from "../services/authApi.js";
 import "../styles/register.css";
 
 export default function Register() {
@@ -8,47 +9,27 @@ export default function Register() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
         setError("");
 
         try {
-            const response = await fetch("/auth/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include",
-                body: JSON.stringify({ username, password })
-            });
-
-            if (response.ok) {
-                navigate("/login");
-                return;
-            }
-
-            if (response.status === 400) {
-                setError("Please check your information and try again.");
-            } else {
-                setError("Unable to create your account.");
-            }
+            await register(username, password);
+            navigate("/login");
         } catch (error) {
-            setError("Unable to connect to the server.");
+            console.error("REGISTRATION FAILED:", error);
+            setError(error.message);
         }
     };
 
     return (
         <div className="register-page">
             <div className="register-card">
-                <Link to="/" className="register-logo">
-                    TableManners
-                </Link>
+                <Link to="/" className="register-logo">TableManners</Link>
 
                 <h2>Create Account</h2>
 
-                {error && (
-                    <p className="register-error">{error}</p>
-                )}
+                {error && <p className="register-error">{error}</p>}
 
                 <form onSubmit={handleSubmit}>
                     <label>
@@ -56,7 +37,7 @@ export default function Register() {
                         <input
                             type="text"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={e => setUsername(e.target.value)}
                             minLength={3}
                             maxLength={25}
                             pattern="[a-zA-Z0-9_]+"
@@ -69,16 +50,14 @@ export default function Register() {
                         <input
                             type="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={e => setPassword(e.target.value)}
                             minLength={8}
                             maxLength={128}
                             required
                         />
                     </label>
 
-                    <button type="submit">
-                        Register
-                    </button>
+                    <button type="submit">Register</button>
                 </form>
 
                 <p className="register-login">
@@ -88,4 +67,3 @@ export default function Register() {
         </div>
     );
 }
-

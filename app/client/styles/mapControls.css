@@ -1,0 +1,85 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.map-controls-modal {
+    width: 280px;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #081820;
+    border: 1px solid #88c070;
+    border-radius: 6px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.map-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+    color: #e0f8d0;
+}
+
+.map-controls h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    color: #88c070;
+}
+
+.map-control-group {
+    display: grid;
+    grid-template-columns: 1fr 36px 36px;
+    align-items: center;
+    gap: 6px;
+}
+
+.map-control-group span {
+    color: #e0f8d0;
+    font-size: 14px;
+}
+
+.map-control-group button {
+    padding: 7px 0;
+    border: 1px solid #346856;
+    border-radius: 4px;
+    background: #081820;
+    color: #e0f8d0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.map-control-group button:hover:not(:disabled) {
+    background: #346856;
+}
+
+.map-control-group button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.background-button,
+.modal-close {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #346856;
+    border-radius: 4px;
+    background: transparent;
+    color: #e0f8d0;
+    text-align: left;
+    cursor: pointer;
+}
+
+.background-button:hover,
+.modal-close:hover {
+    background: #346856;
+}
+
+.modal-close {
+    margin-top: 4px;
+}

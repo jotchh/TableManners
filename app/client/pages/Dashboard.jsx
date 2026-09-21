@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header.jsx";
+import { getCurrentUser } from "../services/authApi.js";
+import { createSession, deleteGame, getOwnedGames, getSession } from "../services/gameApi.js";
 import "../styles/dashboard.css";
 
 export default function Dashboard() {
@@ -11,115 +13,56 @@ export default function Dashboard() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("/auth/me", {
-            credentials: "include"
-        })
-            .then(response => {
-                if (!response.ok) throw new Error();
-                return response.json();
-            })
-            .then(data => {
-                setUser(data);
+        const loadDashboard = async () => {
+            try {
+                const userData = await getCurrentUser();
+                const gamesData = await getOwnedGames();
 
-                return fetch("/api/games/owned", {
-                    credentials: "include"
-                });
-            })
-            .then(response => {
-                if (!response.ok) throw new Error();
-                return response.json();
-            })
-            .then(data => {
-                setGames(data);
-            })
-            .catch(() => {
+                setUser(userData);
+                setGames(gamesData);
+            } catch {
                 navigate("/login");
-            });
+            }
+        };
+
+        loadDashboard();
     }, [navigate]);
-
-    const handleLogout = async () => {
-        await fetch("/auth/logout", {
-            credentials: "include"
-        });
-
-        navigate("/");
-    };
 
     const handleJoinGame = async () => {
         const code = sessionCode.trim().toUpperCase();
-
         if (!code) return;
 
         setJoinError("");
 
-        const response = await fetch(`/api/sessions/${code}`, {
-            credentials: "include"
-        });
-
-        if (!response.ok) {
+        try {
+            const session = await getSession(code);
+            navigate(`/games/${session.gameId}?session=${session.code}`);
+        } catch {
             setJoinError("Session not found.");
-            return;
         }
-
-        const session = await response.json();
-
-        navigate(`/games/${session.gameId}?session=${session.code}`);
     };
 
-    const handleOpenGame = async (gameId) => {
+    const handleOpenGame = async gameId => {
         try {
-            const response = await fetch("/api/sessions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include",
-                body: JSON.stringify({
-                    gameId
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to create session.");
-            }
-
-            const session = await response.json();
-
-            window.location.href =
-                `/games/${gameId}?session=${session.code}`;
+            const session = await createSession(gameId);
+            navigate(`/games/${gameId}?session=${session.code}`);
         } catch (error) {
             console.error("OPEN GAME FAILED:", error);
         }
     };
 
-    const handleDeleteGame = async (gameId) => {
-        const confirmed = window.confirm(
-            "Are you sure you want to delete this game?"
-        );
-
-        if (!confirmed) return;
+    const handleDeleteGame = async gameId => {
+        if (!window.confirm("Are you sure you want to delete this game?")) return;
 
         try {
-            const response = await fetch(`/api/games/${gameId}`, {
-                method: "DELETE",
-                credentials: "include"
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to delete game.");
-            }
-
-            setGames(currentGames =>
-                currentGames.filter(game => game.id !== gameId)
-            );
+            await deleteGame(gameId);
+            setGames(currentGames => currentGames.filter(game => game.id !== gameId));
         } catch (error) {
             console.error("DELETE GAME FAILED:", error);
         }
     };
 
-    if (!user) {
-        return null;
-    }
+    if (!user) return null;
 
     return (
         <div className="dashboard-page">
@@ -132,9 +75,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="dashboard-actions">
-                    <Link to="/games/create" className="dashboard-create">
-                        Create Game
-                    </Link>
+                    <Link to="/games/create" className="dashboard-create">Create Game</Link>
 
                     <div className="dashboard-join">
                         <input
@@ -143,9 +84,7 @@ export default function Dashboard() {
                             placeholder="Session Code"
                             maxLength={6}
                         />
-                        <button onClick={handleJoinGame}>
-                            Join Game
-                        </button>
+                        <button onClick={handleJoinGame}>Join Game</button>
                         {joinError && <p>{joinError}</p>}
                     </div>
                 </div>
@@ -164,21 +103,13 @@ export default function Dashboard() {
                                 <div key={game.id} className="dashboard-game">
                                     <div>
                                         <h3>{game.name}</h3>
-                                        <p>Game #{game.id}</p>
                                     </div>
 
                                     <div className="dashboard-actions">
-                                        <button
-                                            className="dashboard-game-button"
-                                            onClick={() => handleOpenGame(game.id)}
-                                        >
+                                        <button className="dashboard-game-button" onClick={() => handleOpenGame(game.id)}>
                                             Open
                                         </button>
-
-                                        <button
-                                            className="dashboard-game-button"
-                                            onClick={() => handleDeleteGame(game.id)}
-                                        >
+                                        <button className="dashboard-game-button" onClick={() => handleDeleteGame(game.id)}>
                                             Delete
                                         </button>
                                     </div>

@@ -8,7 +8,6 @@ export function CanvasProvider({ children }) {
     const [pan, setPan] = useState({ x: 100, y: 100 });
     const [activeTool, setActiveTool] = useState("select");
     const [activeAoE, setActiveAoE] = useState("circle");
-    const [brushColor, setBrushColor] = useState("#000000");
     const [measurementType, setMeasurementType] = useState("line");
 
     return (
@@ -18,7 +17,6 @@ export function CanvasProvider({ children }) {
                 pan, setPan,
                 activeTool, setActiveTool,
                 activeAoE, setActiveAoE,
-                brushColor, setBrushColor,
                 measurementType, setMeasurementType
             }}
         >
